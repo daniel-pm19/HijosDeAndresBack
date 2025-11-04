@@ -6,7 +6,7 @@ Este repositorio contiene el backend del proyecto "Hijos de Andres" desarrollado
 
 - Isaac David Burgos
 - Juan Sebastian Puentes
-- Julio
+- Daniel Patiño Mejia
 - Tulio Riaño Sánchez
 
 ## Resumen
