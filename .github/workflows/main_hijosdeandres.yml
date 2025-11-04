@@ -1,4 +1,7 @@
-name: Build, Test, Sonar & Deploy - Hackaton-Eciciencia
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy JAR app to Azure Web App - hijosdeandres
 
 on:
   push:
@@ -13,41 +16,40 @@ on:
   workflow_dispatch:
 
 jobs:
-
   test:
-    name: Run tests on develop (push & PR)
     runs-on: ubuntu-latest
-    if: >
-      (github.event_name == 'push' && github.ref == 'refs/heads/develop')
-      || (github.event_name == 'pull_request' && github.base_ref == 'develop')
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'microsoft'
-      - name: Run tests
-        run: mvn -B test --show-version
-
-  build:
-    name: Build JAR (main)
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     permissions:
       contents: read
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up Java version
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
+          distribution: 'microsoft'
+
+      - name: Run tests
+        run: mvn test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java version
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
           distribution: 'microsoft'
 
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean package -DskipTests
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -55,14 +57,15 @@ jobs:
           name: java-app
           path: '${{ github.workspace }}/target/*.jar'
 
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
     permissions:
       id-token: write
       contents: read
-
+    # Solo deployar en push a main o develop (no en PRs)
+    if: github.event_name != 'pull_request'
+  
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
@@ -75,10 +78,11 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9B9C80152F224EAD9793FD72A36820F9 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_61BF3E2871DC42B3BCC0A45EC4A80C31 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_38FBE642DD654DF0A2EE656D77574FB6 }}
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'theboys-sirha'
+          app-name: 'hijosdeandres'
           slot-name: 'Production'
           package: '*.jar'
