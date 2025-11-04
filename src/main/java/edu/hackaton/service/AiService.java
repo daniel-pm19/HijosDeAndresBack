@@ -5,35 +5,36 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import jakarta.ws.rs.core.HttpHeaders;
-
 @Service
 public class AiService {
 
-    @Value("${openai.api.key}")
-    private String apiKey;
+    private final WebClient webClient;
 
-    private final WebClient webClient = WebClient.builder()
-            .baseUrl("https://api.openai.com/openai/v1")
-            .defaultHeader("Authorization", "Bearer" + apiKey)
-            .build();
+    public AiService(@Value("${openai.api.key}") String apiKey, WebClient.Builder builder) {
+        this.webClient = builder
+                .baseUrl("https://api.openai.com/v1")
+                .defaultHeader("Authorization", "Bearer " + apiKey)
+                .build();
+    }
 
     public String analyzeImage(String imageUrl) {
-        // Pedimos una descripción breve de la imagen
         String body = """
         {
-          "model": "llama3-8b-8192",
-          "input": [
-            {"role": "user", "content": [
-              {"type": "input_text", "text": "Describe brevemente la siguiente imagen:"},
-              {"type": "input_image", "image_url": "%s"}
-            ]}
+          "model": "gpt-4o-mini",
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {"type": "text", "text": "Describe brevemente la siguiente imagen:"},
+                {"type": "image_url", "image_url": {"url": "%s"}}
+              ]
+            }
           ]
         }
         """.formatted(imageUrl);
 
         String responseJson = webClient.post()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
+                .uri("/chat/completions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(body)
                 .retrieve()
@@ -44,4 +45,3 @@ public class AiService {
         return responseJson;
     }
 }
-

@@ -1,5 +1,8 @@
 package edu.hackaton.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Service;
 
 import edu.hackaton.model.dto.request.AuthRequestDTO;
@@ -32,4 +35,5 @@ public class AuthService {
         String token = jwtUtil.generateToken(user.getEmail());
         return new AuthResponseDTO(token);
     }
+
 }
