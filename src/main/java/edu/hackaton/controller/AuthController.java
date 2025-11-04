@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import edu.hackaton.service.AuthService;
 import edu.hackaton.model.dto.request.AuthRequestDTO;
+import edu.hackaton.model.dto.request.RegisterRequestDTO;
 import edu.hackaton.model.dto.response.AuthResponseDTO;
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +26,5 @@ public class AuthController{
     }
 
     
-
-
 
 }

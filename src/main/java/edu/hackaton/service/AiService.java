@@ -38,6 +38,8 @@ public class AiService {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
+
+        System.out.println(responseJson);
         return responseJson;
     }
 }
