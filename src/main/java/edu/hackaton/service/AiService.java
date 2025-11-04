@@ -14,14 +14,15 @@ public class AiService {
     private String apiKey;
 
     private final WebClient webClient = WebClient.builder()
-            .baseUrl("https://api.openai.com/v1/responses")
+            .baseUrl("https://api.openai.com/openai/v1")
+            .defaultHeader("Authorization", "Bearer" + apiKey)
             .build();
 
     public String analyzeImage(String imageUrl) {
         // Pedimos una descripción breve de la imagen
         String body = """
         {
-          "model": "gpt-4.1-mini",
+          "model": "llama3-8b-8192",
           "input": [
             {"role": "user", "content": [
               {"type": "input_text", "text": "Describe brevemente la siguiente imagen:"},
