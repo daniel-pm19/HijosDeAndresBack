@@ -3,6 +3,7 @@ edu/hackaton/model/dto/response/UserResponseDTO.class
 edu/hackaton/repository/UserRepository.class
 edu/hackaton/model/dto/request/UserRequestDTO$UserRequestDTOBuilder.class
 edu/hackaton/model/dto/request/ImageRequestDTO.class
+edu/hackaton/service/AiService.class
 edu/hackaton/model/entity/User.class
 edu/hackaton/model/entity/Image.class
 edu/hackaton/HijosDeAndresBackApplication.class

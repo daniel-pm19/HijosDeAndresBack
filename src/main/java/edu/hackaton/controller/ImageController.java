@@ -29,7 +29,7 @@ public class ImageController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ImageResponseDTO>> getImagesByUser(@PathVariable String userId) {
-        return ResponseEntity.ok(imageService.getByUser(userId));
+    public ResponseEntity<List<ImageResponseDTO>> getImageResponseByUserId(@PathVariable String userId) {
+        return ResponseEntity.ok(imageService.getImageResponseByUserId(userId));
     }
 }
