@@ -13,6 +13,8 @@ edu/hackaton/mapper/UserMapper.class
 edu/hackaton/model/dto/request/ImageRequestDTO$ImageRequestDTOBuilder.class
 edu/hackaton/controller/UserController.class
 edu/hackaton/model/dto/response/ImageResponseDTO.class
+edu/hackaton/model/dto/request/RegisterRequestDTO.class
+edu/hackaton/model/dto/request/RegisterRequestDTO$RegisterRequestDTOBuilder.class
 edu/hackaton/service/AuthService.class
 edu/hackaton/model/dto/response/ImageResponseDTO$ImageResponseDTOBuilder.class
 edu/hackaton/config/CorsConfig.class
