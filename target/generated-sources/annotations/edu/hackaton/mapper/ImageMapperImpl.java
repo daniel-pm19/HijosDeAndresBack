@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-11-04T17:07:53-0500",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.9 (Arch Linux)"
+    date = "2025-11-04T17:14:25-0500",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.44.0.v20251023-0518, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
 public class ImageMapperImpl implements ImageMapper {
@@ -24,11 +24,11 @@ public class ImageMapperImpl implements ImageMapper {
 
         Image.ImageBuilder image = Image.builder();
 
-        image.id( dto.getId() );
-        image.userId( dto.getUserId() );
-        image.imageUrl( dto.getImageUrl() );
-        image.description( dto.getDescription() );
         image.createdAt( dto.getCreatedAt() );
+        image.description( dto.getDescription() );
+        image.id( dto.getId() );
+        image.imageUrl( dto.getImageUrl() );
+        image.userId( dto.getUserId() );
 
         return image.build();
     }
@@ -41,11 +41,11 @@ public class ImageMapperImpl implements ImageMapper {
 
         ImageResponseDTO.ImageResponseDTOBuilder imageResponseDTO = ImageResponseDTO.builder();
 
-        imageResponseDTO.id( image.getId() );
-        imageResponseDTO.userId( image.getUserId() );
-        imageResponseDTO.imageUrl( image.getImageUrl() );
-        imageResponseDTO.description( image.getDescription() );
         imageResponseDTO.createdAt( image.getCreatedAt() );
+        imageResponseDTO.description( image.getDescription() );
+        imageResponseDTO.id( image.getId() );
+        imageResponseDTO.imageUrl( image.getImageUrl() );
+        imageResponseDTO.userId( image.getUserId() );
 
         return imageResponseDTO.build();
     }
