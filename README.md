@@ -90,6 +90,37 @@ Usamos el wrapper de Maven incluido en el repositorio.
 
 La aplicación arrancará por defecto en el puerto 8080 (configurable en `application.properties`).
 
+## Docker
+
+El proyecto incluye un `Dockerfile` en la raíz del repositorio que permite construir una imagen Docker multi-stage (compila con Maven en la imagen builder y empaqueta la JAR en la imagen final basada en Temurin JRE).
+
+Ejemplo de uso para crear y ejecutar la imagen localmente:
+
+```bash
+# Construir imagen (desde la raíz del repo)
+docker build -t hijosdeandres:latest .
+
+# Ejecutar contenedor enlazando puerto 8080
+docker run -p 8080:8080 --env OPENAI_API_KEY="$OPENAI_API_KEY" --env SPRING_DATA_MONGODB_URI="$SPRING_DATA_MONGODB_URI" hijosdeandres:latest
+```
+
+Esto permite ejecutar la API en un contenedor sin necesidad de Maven instalado en la máquina de destino.
+
+## Despliegue en Azure
+
+Este proyecto está configurado para desplegarse automáticamente en Azure Web App mediante GitHub Actions. El workflow se encuentra en `.github/workflows/main_hijosdeandres.yml` y hace lo siguiente:
+
+- Ejecuta tests y construye el paquete JAR con Maven.
+- Sube el artefacto y usa la acción `azure/webapps-deploy@v3` para desplegar el JAR al App Service con el nombre `hijosdeandres` (slot `Production`).
+
+El despliegue se ejecuta en pushes a las ramas `main` y `develop` (y por dispatch manual). Para que el flujo funcione es necesario configurar los secretos en el repositorio de GitHub (Settings → Secrets) que usa el workflow, por ejemplo:
+
+- `AZUREAPPSERVICE_CLIENTID_*` (client id)
+- `AZUREAPPSERVICE_TENANTID_*` (tenant id)
+- `AZUREAPPSERVICE_SUBSCRIPTIONID_*` (subscription id)
+
+Alternativamente, si prefieres desplegar como contenedor, puedes publicar la imagen en un registry (Docker Hub o Azure Container Registry) y apuntar un Azure Web App al contenedor resultante.
+
 ## Notas de seguridad
 
 - Nunca comites claves ni credenciales. En `application.properties` pueden verse valores de ejemplo: elimínalos o movelos a variables de entorno.
